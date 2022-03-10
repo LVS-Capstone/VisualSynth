@@ -7,26 +7,40 @@ let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
-let xPos, yPos;
-
+// this is the array that will hold the points
+let arr  = [];
+// control variable
+var control = 0.003;
+//variable to control noise with buttons, default value will be 1
+let n = 1;
 function setup() {
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
   createCanvas(windowWidth, windowHeight);
   hudWidth = Math.min(1024, width); //set the width of the hud to the screen width if below 1024px
   keyWidth = hudWidth / 13;
-  x = windowWidth;
-  y = windowHeight;
   if (debug) {
     width = 1024; //set the width and height of the screen to match the display
     height = 1280;
   }
-  //frameRate(30);
-  //To set the Mode to Degrees i'm using angleMode(). 
-  //The Default mode is Radians
   angleMode(DEGREES);
-  //What rectMode does is it changes the parameters for rect()
-  //which gives priority to the position of the rect instead of size
-  rectMode(CENTER);
+  //adds character to the noise function
+  //can be changed with buttons, with 50% imapact. (maybe interactive in future)
+  noiseDetail(n, 50);
+  // This variable holds the number of points in a row
+  var numPoints = 30;
+  var dis = width / numPoints;
+  
+  // To create the points i'm gonna use a loop
+  for (var x = 0; x < width; x += dis){
+    for(var y = 0; y < height; y += dis){
+      // createVector creates a vector( think of it as a line)
+      var v = createVector(x + random(-15, 15), y + random(-15, 15));
+      //add this point(the line that we made above) to the array
+      arr.push(v);
+      
+    }
+  }
+  //Now we have the points and the lines
 }
 
 function draw() {
@@ -35,18 +49,44 @@ function draw() {
     text("Paused", 50, 50);
     return;
   }
-  background(220);
+  noStroke();
+  fill(255);
+  
+  // We need a loop to iterate the array in order to draw those lines/vectors
+  for(var i = 0; i < arr.length; i++){
+    // create RGB values for the lines
+    // I'm mapping the color to the points itself
+    // This way the lines will have multiple colors
+    // the orignal bounds(0, width/height) are being changed
+    var r = map(arr[i].x, 0, width, 50, 255);
+    var g = map(arr[i].y, 0, height, 50, 255);
+    var b = map(arr[i].x, 0, width, 255, 50);
+    
+    fill(r, g, b);
 
-  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
-
-  push(); //store sketch specific drawing settings
+    // in order for the lines to move, i'm gonna use the noise() function
+    var angle = map(noise(arr[i].x * control, arr[i].y * control ), 0, 1, 0, 720);
+    
+    // Now that we have an angle where we can add a vector to each point in the array
+    arr[i].add(createVector(cos(angle), sin(angle) ) );
+    // Put the lines in a circle
+    if(dist(width/2, height/2, arr[i].x, arr[i].y) < 320){
+      //to make a cleaner effect i'm gonna create an ellipse arround the lines
+      ellipse(arr[i].x, arr[i].y, 2);
+    
+    }
+  }
+    //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
+  push()
   if (info) {
     drawInfo();
-  } //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
+  }
+  //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
   if (hud || info) {
     drawHud();
-  } //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
+  } 
   pop(); //restore sketch specific drawing settings
+
 }
 
 function keyPressed() {
@@ -135,6 +175,7 @@ function keyPressed() {
 
     //second bank of keys:
     case 89: //Y ()
+      n = n + 2;
       break;
     case 85: //U ()
       break;
