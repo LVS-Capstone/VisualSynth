@@ -174,6 +174,7 @@ function keyPressed() {
       break;
 
     //second bank of keys:
+    // Change the noise function. 
     case 89: //Y ()
       n = n + 2;
       break;
