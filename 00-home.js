@@ -35,7 +35,7 @@ function draw() {
     text("Paused", 50, 50);
     return;
   }
-  background(220);
+  background(210);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
 
@@ -168,13 +168,13 @@ function drawHud() {
   textSize(14);
   //draw system control keys
   //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
-  drawKey(0, height - keyWidth * 2, "Hud:", hud.toString(), keyCream, keyGrey); //Key 0 (Toggle Hud)
+  drawKey(0, height - keyWidth * 2, "Overlay:", hud.toString(), keyCream, keyGrey); //Key 0 (Toggle Hud)
   drawKey(keyWidth, height - keyWidth * 2, "Home", "", keyCream, keyGrey); //Key 1 (Home)
   drawKey(keyWidth * 2, height - keyWidth * 2, "Pause", "", keyCream, keyGrey); //Key 2 (Pause)
   drawKey(keyWidth * 3, height - keyWidth * 2, "Next Sketch", "", keyCream, keyGrey); //Key 3 (Next Sketch)
   drawKey(keyWidth * 4, height - keyWidth * 2, "Vol +", "", keyCream, keyGrey); //Key 4 (Volume Up)
-  drawKey(0, height - keyWidth, "Artist Info:", info.toString(), keyCream, keyGrey); //Key 5 (Toggle Info)
-  drawKey(keyWidth, height - keyWidth, "Rando- mize", "", keyCream, keyGrey); //Key 6 (Randomize Variables)
+  drawKey(0, height - keyWidth, "Info:", info.toString(), keyCream, keyGrey); //Key 5 (Toggle Info)
+  drawKey(keyWidth, height - keyWidth, "Shuffle Params", "", keyCream, keyGrey); //Key 6 (Randomize Variables)
   drawKey(keyWidth * 2, height - keyWidth, "Reset Sketch", "", keyCream, keyGrey); //Key 7 (Reset Sketch)
   drawKey(keyWidth * 3, height - keyWidth, "Previous Sketch", "", keyCream, keyGrey); //Key 8 (Previous Sketch)
   drawKey(keyWidth * 4, height - keyWidth, "Vol -", "", keyCream, keyGrey); //Key 9 (Volume Down)
@@ -206,9 +206,13 @@ function drawInfo() {
   strokeWeight(1.5);
   textFont(fontOS);
   textSize(25);
+  fill(keyCream);
+  stroke(keyGrey);
   rectMode(CENTER);
   rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 2);
   rectMode(CORNER);
+  stroke(keyCream);
+  fill(keyGrey);
   text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
@@ -224,7 +228,7 @@ function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
   fill(keyFill);
   stroke(keyStroke);
   square(posX, posY, keyWidth, keyWidth * 0.13);
-  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth, 1);
+  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth, 2);
   noStroke();
   fill(keyStroke);
   text(
