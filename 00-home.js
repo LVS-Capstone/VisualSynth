@@ -5,11 +5,11 @@ let paused = false; //hud default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
-
-//##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
 let fontOxy;
 let keyCream;
 let keyGrey;
+
+//##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
 
 function setup() {
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
@@ -20,11 +20,12 @@ function setup() {
     width = 1024; //set the width and height of the screen to match the display
     height = 1280;
   }
-  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
   fontOS = loadFont('fonts/OpenSans-Medium.ttf');
-  keyCream = color(241, 242, 220);
+  keyCream = color(235, 235, 215);
   keyGrey = color(10, 10, 10);
   textFont(fontOS);
+
+  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
 
 }
 
@@ -193,8 +194,8 @@ function drawHud() {
 
   //draw sketch control knobs
   //knobs are drawn by drawKnob method. Parameters: x positon, y position, label, value, state, fill, stroke
-  drawKnob(keyWidth * 5, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 0 ()
-  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 1 ()
+  drawKnob(keyWidth * 5, height - keyWidth * 2, "Test", 100, "Two", keyCream, keyGrey); //Knob 0 ()
+  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 111, "", keyCream, keyGrey); //Knob 1 ()
   drawKnob(keyWidth * 7, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 2 ()
   drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 3 ()
   drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 4 ()
@@ -206,7 +207,7 @@ function drawInfo() {
   textFont(fontOS);
   textSize(25);
   rectMode(CENTER);
-  rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 7);
+  rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 2);
   rectMode(CORNER);
   text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
@@ -244,7 +245,7 @@ function drawKnob(posX, posY, var_name, value, state, knobFill, knobStroke) {
   fill(knobStroke);
   text(var_name, posX + 0.02 * keyWidth, posY + 0.01 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
   textAlign(CENTER);
-  text(value, posX + 0.37 * keyWidth, posY + 0.4 * keyWidth, keyWidth * 0.3, keyWidth * 0.3);
+  text(value, posX + 0.365 * keyWidth, posY + 0.37 * keyWidth, keyWidth * 0.3, keyWidth * 0.3);
   textAlign(LEFT);
   text(state, posX + 0.02 * keyWidth, posY + 0.76 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
 }
