@@ -7,6 +7,9 @@ let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+let fontOxy;
+let keyCream;
+let keyGrey;
 
 function setup() {
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
@@ -18,6 +21,10 @@ function setup() {
     height = 1280;
   }
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
+  fontOS = loadFont('fonts/OpenSans-Medium.ttf');
+  keyCream = color(241, 242, 220);
+  keyGrey = color(10, 10, 10);
+  textFont(fontOS);
 
 }
 
@@ -156,47 +163,47 @@ function drawHud() {
   //function for drawing the hud, and showing key
   //rect(0, height - keyWidth * 2, hudWidth, keyWidth * 2);//main hud rectangle
   strokeWeight(1.5);
-  textFont("Arial");
-  textSize(16);
+  textFont(fontOS);
+  textSize(14);
   //draw system control keys
   //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
-  drawKey(0, height - keyWidth * 2, "Hud:", hud.toString(), color(255), color(0)); //Key 0 (Toggle Hud)
-  drawKey(keyWidth, height - keyWidth * 2, "Home", "", color(255), color(0)); //Key 1 (Home)
-  drawKey(keyWidth * 2, height - keyWidth * 2, "Pause", "", color(255), color(0)); //Key 2 (Pause)
-  drawKey(keyWidth * 3, height - keyWidth * 2, "Next Sketch", "", color(255), color(0)); //Key 3 (Next Sketch)
-  drawKey(keyWidth * 4, height - keyWidth * 2, "Vol +", "", color(255), color(0)); //Key 4 (Volume Up)
-  drawKey(0, height - keyWidth, "Artist Info:", info.toString(), color(255), color(0)); //Key 5 (Toggle Info)
-  drawKey(keyWidth, height - keyWidth, "Rando- mize", "", color(255), color(0)); //Key 6 (Randomize Variables)
-  drawKey(keyWidth * 2, height - keyWidth, "Reset Sketch", "", color(255), color(0)); //Key 7 (Reset Sketch)
-  drawKey(keyWidth * 3, height - keyWidth, "Previous Sketch", "", color(255), color(0)); //Key 8 (Previous Sketch)
-  drawKey(keyWidth * 4, height - keyWidth, "Vol -", "", color(255), color(0)); //Key 9 (Volume Down)
+  drawKey(0, height - keyWidth * 2, "Hud:", hud.toString(), keyCream, keyGrey); //Key 0 (Toggle Hud)
+  drawKey(keyWidth, height - keyWidth * 2, "Home", "", keyCream, keyGrey); //Key 1 (Home)
+  drawKey(keyWidth * 2, height - keyWidth * 2, "Pause", "", keyCream, keyGrey); //Key 2 (Pause)
+  drawKey(keyWidth * 3, height - keyWidth * 2, "Next Sketch", "", keyCream, keyGrey); //Key 3 (Next Sketch)
+  drawKey(keyWidth * 4, height - keyWidth * 2, "Vol +", "", keyCream, keyGrey); //Key 4 (Volume Up)
+  drawKey(0, height - keyWidth, "Artist Info:", info.toString(), keyCream, keyGrey); //Key 5 (Toggle Info)
+  drawKey(keyWidth, height - keyWidth, "Rando- mize", "", keyCream, keyGrey); //Key 6 (Randomize Variables)
+  drawKey(keyWidth * 2, height - keyWidth, "Reset Sketch", "", keyCream, keyGrey); //Key 7 (Reset Sketch)
+  drawKey(keyWidth * 3, height - keyWidth, "Previous Sketch", "", keyCream, keyGrey); //Key 8 (Previous Sketch)
+  drawKey(keyWidth * 4, height - keyWidth, "Vol -", "", keyCream, keyGrey); //Key 9 (Volume Down)
 
   //draw sketch control keys
   //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
-  drawKey(keyWidth * 8, height - keyWidth * 2, "Inactive", "", color(255), color(0)); //Key 10 ()
-  drawKey(keyWidth * 9, height - keyWidth * 2, "", "", color(255), color(0)); //Key 11 ()
-  drawKey(keyWidth * 10, height - keyWidth * 2, "", "", color(255), color(0)); //Key 12 ()
-  drawKey(keyWidth * 11, height - keyWidth * 2, "", "", color(255), color(0)); //Key 13 ()
-  drawKey(keyWidth * 12, height - keyWidth * 2, "", "", color(255), color(0)); //Key 14 ()
-  drawKey(keyWidth * 8, height - keyWidth, "", "", color(255), color(0)); //Key 15 ()
-  drawKey(keyWidth * 9, height - keyWidth, "", "", color(255), color(0)); //Key 16 ()
-  drawKey(keyWidth * 10, height - keyWidth, "", "", color(255), color(0)); //Key 17 ()
-  drawKey(keyWidth * 11, height - keyWidth, "", "", color(255), color(0)); //Key 18 ()
-  drawKey(keyWidth * 12, height - keyWidth, "", "", color(255), color(0)); //Key 19 ()
+  drawKey(keyWidth * 8, height - keyWidth * 2, "Inactive", "", keyCream, keyGrey); //Key 10 ()
+  drawKey(keyWidth * 9, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 11 ()
+  drawKey(keyWidth * 10, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 12 ()
+  drawKey(keyWidth * 11, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 13 ()
+  drawKey(keyWidth * 12, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 14 ()
+  drawKey(keyWidth * 8, height - keyWidth, "", "", keyCream, keyGrey); //Key 15 ()
+  drawKey(keyWidth * 9, height - keyWidth, "", "", keyCream, keyGrey); //Key 16 ()
+  drawKey(keyWidth * 10, height - keyWidth, "", "", keyCream, keyGrey); //Key 17 ()
+  drawKey(keyWidth * 11, height - keyWidth, "", "", keyCream, keyGrey); //Key 18 ()
+  drawKey(keyWidth * 12, height - keyWidth, "", "", keyCream, keyGrey); //Key 19 ()
 
   //draw sketch control knobs
   //knobs are drawn by drawKnob method. Parameters: x positon, y position, label, value, state, fill, stroke
-  drawKnob(keyWidth * 5, height - keyWidth * 2, "", 0, "", color(255), color(0)); //Knob 0 ()
-  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 0, "", color(255), color(0)); //Knob 1 ()
-  drawKnob(keyWidth * 7, height - keyWidth * 2, "", 0, "", color(255), color(0)); //Knob 2 ()
-  drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 3 ()
-  drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 4 ()
-  drawKnob(keyWidth * 7, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 5 ()
+  drawKnob(keyWidth * 5, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 0 ()
+  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 1 ()
+  drawKnob(keyWidth * 7, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 2 ()
+  drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 3 ()
+  drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 4 ()
+  drawKnob(keyWidth * 7, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 5 ()
 }
 
 function drawInfo() {
   strokeWeight(1.5);
-  textFont("Arial");
+  textFont(fontOS);
   textSize(25);
   rectMode(CENTER);
   rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 7);
@@ -215,13 +222,13 @@ function drawInfo() {
 function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
   fill(keyFill);
   stroke(keyStroke);
-  square(posX, posY, keyWidth, 10);
-  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth);
+  square(posX, posY, keyWidth, keyWidth * 0.13);
+  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth, 1);
   noStroke();
   fill(keyStroke);
   text(
-    var_name + "\n" + state,
-    posX + 0.12 * keyWidth,
+    var_name + "\n\n" + state,
+    posX + 0.13 * keyWidth,
     posY + 0.09 * keyWidth,
     keyWidth * 0.76,
     keyWidth * 0.78
