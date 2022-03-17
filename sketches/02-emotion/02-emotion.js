@@ -5,47 +5,57 @@ let paused = false; //hud default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
-let discomode = false;//flag for disco mode
+let fontOxy;
+let keyCream;
+let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
-//added some test variables
 
 function setup() {
-//changed framerate to 40 to make it smoother
+  //changed framrate for smoother transition colors
   frameRate(2);
+  //color variables for different pieces of sketch
+  blink = 0
   brown = color(210, 147, 125);
   yellow = color(238, 220, 130);
   steel = color(194, 185, 184);
 
+  //text variable
   chatter = 'ün';
   createCanvas(windowWidth, windowHeight);
-  hudWidth = Math.min(1024, width);
+  hudWidth = Math.min(1024, width); //set the width of the hud to the screen width if below 1024px
   keyWidth = hudWidth / 13;
-//set the width of the hud to the screen width if below 1024px
-//set the width and height of the screen to match the display
   if (debug) {
-    width = 1024;
+    width = 1024; //set the width and height of the screen to match the display
     height = 1280;
   }
-}
+  fontOS = loadFont('../../fonts/OpenSans-Medium.ttf');
+  keyCream = color(235, 235, 215);
+  keyGrey = color(10, 10, 10);
+  textFont(fontOS);
 
-var blink = 0
+  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
+  //blink determines when the sketch 'swaps' between two states
+
+
+}
 
 function draw() {
   // Pause Logic: If pause flag is true, do nothing in draw, except indicate that the sketch is paused
   if (paused) {
-    fill(50);
-    text("Drawing is Paüsed!", 160, 300);
+    text("Paused", 50, 50);
     return;
   }
+  background(210);
 
+  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
   blink = blink + 1
 
-
-//##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
+  //Set color of background
   background(steel);
   if (blink % 2 === 0)  {
-
+    //if the blink value meets this condition
+    //fill with the yellow color, create a series of circles
     fill(yellow);
     circle(200, 150, 100);
     circle(200, 300, 100);
@@ -57,14 +67,18 @@ function draw() {
     circle(550, 300, 100);
     circle(550, 450, 100);
 
+    //Alter text size, fill once again
     textSize(50);
     fill(50);
+    //print text of chatter at random coordinates around the sketch
     text(chatter, random(0, 1024), random(0, 500));
     text(chatter, random(0, 1024), random(0, 500));
   }
 
   else {
-
+    //If it's not the case, fill the drawing with brown
+    //Create series of circles that take on the brown colors
+    //This portion has no text
     fill(brown);
     circle(200, 150, 100);
     circle(200, 300, 100);
@@ -77,9 +91,6 @@ function draw() {
     circle(550, 450, 100);
   }
 
-  line(0, 250, 125, 0);
-  line(windowWidth, 250, windowWidth - 125, 0);
-
 
 
   push(); //store sketch specific drawing settings
@@ -87,6 +98,7 @@ function draw() {
     drawInfo();
   } //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
   if (hud || info) {
+    translate((width-hudWidth)/2, 0);
     drawHud();
   } //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
   pop(); //restore sketch specific drawing settings
@@ -177,54 +189,48 @@ function keyPressed() {
       break;
 
     //second bank of keys:
-    case 89: //Y () //Sleep
-      //Goes to sleep, darkens background and shuts off lights.
+    case 89: //Y (Sleep)
+    //Goes to sleep, darkens background and shuts off lights.
       yellow = (219, 78, 2);
       brown = (76, 53, 46);
       steel = (179, 137, 124);
       chatter = 'Zz';
       frameRate(1);
-      discomode = false;
       break;
-    case 85: //U () //Default
-      //Reverts back to normal colors.
+
+    case 85: //U (Default)
+    //Reverts back to normal colors.
       brown = color(210, 147, 125);
       yellow = color(238, 220, 130);
       steel = color(194, 185, 184);
       chatter = 'ün';
       frameRate(2);
-      discomode = false;
       break;
-    case 73: //I () //Enrage
-      //Enrage, increasing the framerate and turning the colors to shades         of red
+
+    case 73: //I (Enrage)
+    //Enrage, increasing the framerate and turning the colors to shades         of red
       brown = color(250, 85, 0);
       yellow = color(250, 85, 102);
       steel = color(194, 185, 184);
       chatter = 'beep!';
       frameRate(5);
-      discomode = false;
       break;
-    case 79: //O () //Calm
-      //Calm down, decreasing the framerate to a crawl and picking cool           colors
-      brown = color(3, 182, 252);
-      yellow = color(26, 130, 171);
-      steel = color(111, 232, 129);
-      chatter = '❀';
-      frameRate(1);
-      discomode = false;
+
+    case 79: //O (Calm)
+    //Calm down, decreasing the framerate to a crawl and picking cool           colors
+    brown = color(3, 182, 252);
+    yellow = color(26, 130, 171);
+    steel = color(111, 232, 129);
+    chatter = '❀';
+    frameRate(1);
       break;
-    case 80: //P () //Music Mode
-      //Picks some soft colors and plays music
-      //Wasn't able to add music, freesounds requires and account
-      discomode = true;
+
+    case 80: //P (Disco Mode)
       brown = color(162, 81, 219);
       yellow = color(100, 40, 143);
-      steel = color(194, 185, 184);
-
+      steel = color(150, 92, 191);
       chatter = '♫';
       frameRate(4);
-
-      steel = color(150, 92, 191);
       break;
     case 72: //H ()
       break;
@@ -245,135 +251,62 @@ function drawHud() {
   //function for drawing the hud, and showing key
   //rect(0, height - keyWidth * 2, hudWidth, keyWidth * 2);//main hud rectangle
   strokeWeight(1.5);
-  textFont("Arial");
-  textSize(16);
+  textFont(fontOS);
+  textSize(14);
   //draw system control keys
-  drawKey(
-    0,
-    height - keyWidth * 2,
-    "Hud:",
-    hud.toString(),
-    color(255),
-    color(0)
-  ); //Key 0 (Toggle Hud)
-  drawKey(keyWidth, height - keyWidth * 2, "Home", "", color(255), color(0)); //Key 1 (Home)
-  drawKey(
-    keyWidth * 2,
-    height - keyWidth * 2,
-    "Pause",
-    "",
-    color(255),
-    color(0)
-  ); //Key 2 (Pause)
-  drawKey(
-    keyWidth * 3,
-    height - keyWidth * 2,
-    "Next Sketch",
-    "",
-    color(255),
-    color(0)
-  ); //Key 3 (Next Sketch)
-  drawKey(
-    keyWidth * 4,
-    height - keyWidth * 2,
-    "Vol +",
-    "",
-    color(255),
-    color(0)
-  ); //Key 4 (Volume Up)
-  drawKey(
-    0,
-    height - keyWidth,
-    "Artist Info:",
-    info.toString(),
-    color(255),
-    color(0)
-  ); //Key 5 (Toggle Info)
-  drawKey(keyWidth, height - keyWidth, "Rando- mize", "", color(255), color(0)); //Key 6 (Randomize Variables)
-  drawKey(
-    keyWidth * 2,
-    height - keyWidth,
-    "Reset Sketch",
-    "",
-    color(255),
-    color(0)
-  ); //Key 7 (Reset Sketch)
-  drawKey(
-    keyWidth * 3,
-    height - keyWidth,
-    "Previous Sketch",
-    "",
-    color(255),
-    color(0)
-  ); //Key 8 (Previous Sketch)
-  drawKey(keyWidth * 4, height - keyWidth, "Vol -", "", color(255), color(0)); //Key 9 (Volume Down)
+  //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
+  drawKey(0, height - keyWidth * 2, "Overlay:", hud.toString(), keyCream, keyGrey); //Key 0 (Toggle Hud)
+  drawKey(keyWidth, height - keyWidth * 2, "Home", "", keyCream, keyGrey); //Key 1 (Home)
+  drawKey(keyWidth * 2, height - keyWidth * 2, "Pause", "", keyCream, keyGrey); //Key 2 (Pause)
+  drawKey(keyWidth * 3, height - keyWidth * 2, "Next Sketch", "", keyCream, keyGrey); //Key 3 (Next Sketch)
+  drawKey(keyWidth * 4, height - keyWidth * 2, "Vol +", "", keyCream, keyGrey); //Key 4 (Volume Up)
+  drawKey(0, height - keyWidth, "Info:", info.toString(), keyCream, keyGrey); //Key 5 (Toggle Info)
+  drawKey(keyWidth, height - keyWidth, "Shuffle Params", "", keyCream, keyGrey); //Key 6 (Randomize Variables)
+  drawKey(keyWidth * 2, height - keyWidth, "Reset Sketch", "", keyCream, keyGrey); //Key 7 (Reset Sketch)
+  drawKey(keyWidth * 3, height - keyWidth, "Previous Sketch", "", keyCream, keyGrey); //Key 8 (Previous Sketch)
+  drawKey(keyWidth * 4, height - keyWidth, "Vol -", "", keyCream, keyGrey); //Key 9 (Volume Down)
 
   //draw sketch control keys
-  drawKey(
-    keyWidth * 8,
-    height - keyWidth * 2,
-    "Sleep",
-    "",
-    color(255),
-    color(0)
-  ); //Key 10 ()
-  drawKey(keyWidth * 9, height - keyWidth * 2, "Reset", "", color(255), color(0)); //Key 11 ()
-  drawKey(keyWidth * 10, height - keyWidth * 2, "Rage", "", color(255), color(0)); //Key 12 ()
-  drawKey(keyWidth * 11, height - keyWidth * 2, "Calm", "", color(255), color(0)); //Key 13 ()
-  drawKey(keyWidth * 12, height - keyWidth * 2, "Disco", "", color(255), color(0)); //Key 14 ()
-  drawKey(keyWidth * 8, height - keyWidth, "", "", color(255), color(0)); //Key 15 ()
-  drawKey(keyWidth * 9, height - keyWidth, "", "", color(255), color(0)); //Key 16 ()
-  drawKey(keyWidth * 10, height - keyWidth, "", "", color(255), color(0)); //Key 17 ()
-  drawKey(keyWidth * 11, height - keyWidth, "", "", color(255), color(0)); //Key 18 ()
-  drawKey(keyWidth * 12, height - keyWidth, "", "", color(255), color(0)); //Key 19 ()
+  //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
+  drawKey(keyWidth * 8, height - keyWidth * 2, "Sleep", "", keyCream, keyGrey); //Key 10 ()
+  drawKey(keyWidth * 9, height - keyWidth * 2, "Reset", "", keyCream, keyGrey); //Key 11 ()
+  drawKey(keyWidth * 10, height - keyWidth * 2, "Enrage", "", keyCream, keyGrey); //Key 12 ()
+  drawKey(keyWidth * 11, height - keyWidth * 2, "Calm", "", keyCream, keyGrey); //Key 13 ()
+  drawKey(keyWidth * 12, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 14 ()
+  drawKey(keyWidth * 8, height - keyWidth, "", "", keyCream, keyGrey); //Key 15 ()
+  drawKey(keyWidth * 9, height - keyWidth, "", "", keyCream, keyGrey); //Key 16 ()
+  drawKey(keyWidth * 10, height - keyWidth, "", "", keyCream, keyGrey); //Key 17 ()
+  drawKey(keyWidth * 11, height - keyWidth, "", "", keyCream, keyGrey); //Key 18 ()
+  drawKey(keyWidth * 12, height - keyWidth, "", "", keyCream, keyGrey); //Key 19 ()
 
   //draw sketch control knobs
-  drawKnob(
-    keyWidth * 5,
-    height - keyWidth * 2,
-    "",
-    0,
-    "",
-    color(255),
-    color(0)
-  ); //Knob 0 ()
-  drawKnob(
-    keyWidth * 6,
-    height - keyWidth * 2,
-    "",
-    0,
-    "",
-    color(255),
-    color(0)
-  ); //Knob 1 ()
-  drawKnob(
-    keyWidth * 7,
-    height - keyWidth * 2,
-    "",
-    0,
-    "",
-    color(255),
-    color(0)
-  ); //Knob 2 ()
-  drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 3 ()
-  drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 4 ()
-  drawKnob(keyWidth * 7, height - keyWidth, "", 0, "", color(255), color(0)); //Knob 5 ()
+  //knobs are drawn by drawKnob method. Parameters: x positon, y position, label, value, state, fill, stroke
+  drawKnob(keyWidth * 5, height - keyWidth * 2, "Test", 100, "Two", keyCream, keyGrey); //Knob 0 ()
+  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 111, "", keyCream, keyGrey); //Knob 1 ()
+  drawKnob(keyWidth * 7, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 2 ()
+  drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 3 ()
+  drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 4 ()
+  drawKnob(keyWidth * 7, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 5 ()
 }
 
 function drawInfo() {
   strokeWeight(1.5);
-  textFont("Arial");
+  textFont(fontOS);
   textSize(25);
+  fill(keyCream);
+  stroke(keyGrey);
   rectMode(CENTER);
-  rect(width / 2, height / 2, width * 0.66, height * 0.66, 15);
+  rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 2);
   rectMode(CORNER);
-  text("Artist Statement:", width * 0.2, height * 0.215);
+  stroke(keyCream);
+  fill(keyGrey);
+  text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
     "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. \n\nQuis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    width * 0.2,
-    height * 0.24,
-    width * 0.6,
+    (width * 0.5) - (hudWidth * 0.35),
+    height * 0.21,
+    (hudWidth * 0.7),
     height * 0.6
   );
 }
@@ -381,13 +314,13 @@ function drawInfo() {
 function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
   fill(keyFill);
   stroke(keyStroke);
-  square(posX, posY, keyWidth, 10);
-  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth);
+  square(posX, posY, keyWidth, keyWidth * 0.13);
+  square(posX + 0.11 * keyWidth, posY + 0.08 * keyWidth, 0.78 * keyWidth, 2);
   noStroke();
   fill(keyStroke);
   text(
-    var_name + "\n" + state,
-    posX + 0.12 * keyWidth,
+    var_name + "\n\n" + state,
+    posX + 0.13 * keyWidth,
     posY + 0.09 * keyWidth,
     keyWidth * 0.76,
     keyWidth * 0.78
@@ -401,29 +334,11 @@ function drawKnob(posX, posY, var_name, value, state, knobFill, knobStroke) {
   circle(posX + 0.5 * keyWidth, posY + 0.5 * keyWidth, 0.43 * keyWidth);
   noStroke();
   fill(knobStroke);
-  text(
-    var_name,
-    posX + 0.02 * keyWidth,
-    posY + 0.01 * keyWidth,
-    keyWidth * 0.98,
-    keyWidth * 0.98
-  );
+  text(var_name, posX + 0.02 * keyWidth, posY + 0.01 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
   textAlign(CENTER);
-  text(
-    value,
-    posX + 0.37 * keyWidth,
-    posY + 0.4 * keyWidth,
-    keyWidth * 0.3,
-    keyWidth * 0.3
-  );
+  text(value, posX + 0.365 * keyWidth, posY + 0.37 * keyWidth, keyWidth * 0.3, keyWidth * 0.3);
   textAlign(LEFT);
-  text(
-    state,
-    posX + 0.02 * keyWidth,
-    posY + 0.76 * keyWidth,
-    keyWidth * 0.98,
-    keyWidth * 0.98
-  );
+  text(state, posX + 0.02 * keyWidth, posY + 0.76 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
 }
 
 function randomize() {
