@@ -12,6 +12,7 @@ let keyGrey;
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
 
 function setup() {
+  createCanvas(width, height);
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
   createCanvas(windowWidth, windowHeight);
   hudWidth = Math.min(1024, width); //set the width of the hud to the screen width if below 1024px
@@ -32,7 +33,7 @@ function setup() {
 function draw() {
   // Pause Logic: If pause flag is true, do nothing in draw, except indicate that the sketch is paused
   if (paused) {
-    text("Paused", 50, 50);
+    text('Paused',50,50)
     return;
   }
   background(210);
@@ -44,7 +45,6 @@ function draw() {
     drawInfo();
   } //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
   if (hud || info) {
-    translate((width-hudWidth)/2, 0);
     drawHud();
   } //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
   pop(); //restore sketch specific drawing settings
@@ -64,13 +64,13 @@ function keyPressed() {
       hud = !hud; //swap the value of the hud variable when the 'A' Key is pressed.
       break;
     case 87: //W (Home)
-      window.location.href = "/index.html"; //redirect current page to sketch 0, the home menu
+      window.location.href = '/index.html'; //redirect current page to sketch 0, the home menu
       break;
     case 69: //E (Pause)
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "/sketches/01_test/test.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = '/sketches/01_test/test.html'; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
@@ -81,7 +81,7 @@ function keyPressed() {
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "/index.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = '/index.html'; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
       break;
     //Volume Dn (handled by OS)
 
@@ -215,13 +215,7 @@ function drawInfo() {
   fill(keyGrey);
   text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
-  text(
-    "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. \n\nQuis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    (width * 0.5) - (hudWidth * 0.35),
-    height * 0.21,
-    (hudWidth * 0.7),
-    height * 0.6
-  );
+  text('Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. \n\nQuis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',width*0.2,height*0.24,width*0.6, height*0.6);
 }
 
 function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
@@ -243,15 +237,15 @@ function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
 function drawKnob(posX, posY, var_name, value, state, knobFill, knobStroke) {
   fill(knobFill);
   stroke(knobStroke);
-  circle(posX + 0.5 * keyWidth, posY + 0.5 * keyWidth, 0.55 * keyWidth);
-  circle(posX + 0.5 * keyWidth, posY + 0.5 * keyWidth, 0.43 * keyWidth);
+  circle(posX+(0.5*keyWidth),posY+(0.5*keyWidth),0.55*keyWidth);
+  circle(posX+(0.5*keyWidth),posY+(0.5*keyWidth),0.43*keyWidth);
   noStroke();
   fill(knobStroke);
-  text(var_name, posX + 0.02 * keyWidth, posY + 0.01 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
+  text(var_name, posX+(0.02*keyWidth),posY+(0.01*keyWidth), keyWidth*0.98, keyWidth*0.98)
   textAlign(CENTER);
   text(value, posX + 0.365 * keyWidth, posY + 0.37 * keyWidth, keyWidth * 0.3, keyWidth * 0.3);
   textAlign(LEFT);
-  text(state, posX + 0.02 * keyWidth, posY + 0.76 * keyWidth, keyWidth * 0.98, keyWidth * 0.98);
+  text(state, posX+(0.02*keyWidth),posY+(0.76*keyWidth), keyWidth*0.98, keyWidth*0.98)
 }
 
 function randomize() {
