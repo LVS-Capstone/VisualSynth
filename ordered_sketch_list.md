@@ -1,21 +1,25 @@
 # This file is the final reference for the order of sketches to be followed by the hardware navigation buttons:
 
-# 00 - Menu (Rob)
-## Previous: xx - yyyy
-## Next: 01 - yyyy
+# 00-home (Rob)
+## Previous: xx-yyyy
+## Next: 01-unnamed
 
-# 01 - Sketch Name (Rob)
-## Previous: 00 - Menu
-## Next: 02 - yyyy
+# 01-unnamed (Rob)
+## Previous: 00-home
+## Next: 02-emotion
 
-# 02 - Sketch Name (Michael)
-## Previous: xx - yyyy
-## Next: xx - yyyy
+# 02-emotion (Michael)
+## Previous: 01-unnamed
+## Next: 03-Draw
 
-# 03 - Sketch Name (Edgar)
-## Previous: xx - yyyy
-## Next: xx - yyyy
+# 03-Draw (Sahil)
+## Previous: 02-emotion
+## Next: 04-Flow_Lines
 
-# 04 - Sketch Name (Sahil)
-## Previous: xx - yyyy
+# 04-Flow_Lines (Sahil)
+## Previous: 03-Draw
+## Next: 05-rotateRect
+
+# 05-rotateRect (Edgar)
+## Previous: 04-Flow_Lines
 ## Next: xx - yyyy

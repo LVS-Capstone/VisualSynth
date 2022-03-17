@@ -44,7 +44,7 @@ function draw() {
     text('Paused',50,50)
     return;
   }
-  background(210);
+  background(0);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
   noFill();
@@ -53,18 +53,18 @@ function draw() {
   r = random (0,255);
   g = random (0,255);
   b = random (0,40);
-  
+
   // The second parameter is the opacity value
   fill (r,80,g, b);
-  
+
   ellipse(xPos, yPos,s,s);
-   
+
   if (stop != true){
   r = r + 2;
   s=s+0.1;
   }
   fill (r, 40, 255,5);
-  
+
   push(); //store sketch specific drawing settings
   if (info) {
     drawInfo();
