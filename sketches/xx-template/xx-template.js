@@ -1,7 +1,7 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
 let hud = true; //hud default state
 let info = false; //info panel default state
-let paused = false; //hud default state
+let paused = false; //pause default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
