@@ -53,7 +53,7 @@ function draw() {
       push();
         noFill();
 
-      rotate(sin(frameCount+i)*rotateVar);//rotates rect the can change speed with rotateVar
+      rotate(sin(frameCount+i)*rotateVar);//rotates rect the can change speed with rotateVar with buttons 7, 8 and v
       var r = map(sin(frameCount), -1, 1, 50, 255);
       var g = map(cos(frameCount/2), -1, 1, 50, 255)
       var b = map(sin(frameCount/4), -1, 1, 50, 255)
