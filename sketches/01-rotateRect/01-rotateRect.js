@@ -1,7 +1,7 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
 let hud = true; //hud default state
 let info = false; //info panel default state
-let paused = false; //hud default state
+let paused = false; //pause default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
@@ -10,6 +10,8 @@ let keyCream;
 let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+
+let rotateVar = 10;
 
 function setup() {
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
@@ -26,7 +28,8 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
-
+  angleMode(DEGREES);
+  rectMode(CENTER);
 }
 
 function draw() {
@@ -35,9 +38,31 @@ function draw() {
     text("Paused", 50, 50);
     return;
   }
-  background(210);
+  background(220);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
+
+  push();
+  //translate(width, height);
+  stroke(255);
+  pop();
+
+  for (var i = 0; i<117; i++)
+    {
+
+      push();
+        noFill();
+
+      rotate(sin(frameCount+i)*rotateVar);//rotates rect the can change speed with rotateVar
+      var r = map(sin(frameCount), -1, 1, 50, 255);
+      var g = map(cos(frameCount/2), -1, 1, 50, 255)
+      var b = map(sin(frameCount/4), -1, 1, 50, 255)
+
+      stroke(r,g,b)
+
+      rect(windowWidth/2,250,600-i*3,600-i*3, 117-i)
+      pop();
+    }
 
   push(); //store sketch specific drawing settings
   if (info) {
@@ -112,10 +137,13 @@ function keyPressed() {
 
     //encoder 3
     case 55: //7 ()
+      rotateVar = rotateVar*2;
       break;
     case 56: //8 ()
+      rotateVar = 10;
       break;
     case 86: //V ()
+      rotateVar = rotateVar*0.5;
       break;
 
     //encoder 4
