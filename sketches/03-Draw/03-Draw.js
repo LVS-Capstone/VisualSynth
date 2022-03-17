@@ -10,6 +10,11 @@ let keyCream;
 let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+var r, g, b, s;
+// The position variables
+var xPos, yPos;
+// The variable to stop the growth
+var stop;
 
 function setup() {
   createCanvas(width, height);
@@ -27,7 +32,10 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
-
+  xPos = width/2;
+  yPos = height/2;
+  stop = false;
+  s = 1;
 }
 
 function draw() {
@@ -39,7 +47,24 @@ function draw() {
   background(210);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
-
+  noFill();
+  noStroke();
+  // The color, r is also the radius
+  r = random (0,255);
+  g = random (0,255);
+  b = random (0,40);
+  
+  // The second parameter is the opacity value
+  fill (r,80,g, b);
+  
+  ellipse(xPos, yPos,s,s);
+   
+  if (stop != true){
+  r = r + 2;
+  s=s+0.1;
+  }
+  fill (r, 40, 255,5);
+  
   push(); //store sketch specific drawing settings
   if (info) {
     drawInfo();
@@ -133,23 +158,28 @@ function keyPressed() {
       break;
     case 87: //B ()
       break;
-
     //second bank of keys:
     case 89: //Y ()
       break;
-    case 85: //U ()
+    case 85: //U () // Goes Up
+      yPos = yPos - 10;
       break;
-    case 73: //I ()
+    case 73: //I () // Stops the Growth of the circle
+      stop = true;
       break;
-    case 79: //O ()
+    case 79: //O () // Resumes the Growth of the circle
+      stop = false;
       break;
     case 80: //P ()
       break;
-    case 72: //H ()
+    case 72: //H () // Goes Left
+      xPos = xPos - 10;
       break;
-    case 74: //J ()
+    case 74: //J () // Goes down
+      yPos = yPos + 10;
       break;
-    case 75: //K ()
+    case 75: //K () //Goes Right
+      xPos = xPos + 10;
       break;
     case 76: //L ()
       break;
