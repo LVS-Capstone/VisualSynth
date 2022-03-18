@@ -110,7 +110,7 @@ function keyPressed() {
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../02_emotion/02_emotion.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../02-emotion/02-emotion.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
@@ -331,10 +331,10 @@ function drawInfo() {
   rectMode(CORNER);
   stroke(keyCream);
   fill(keyGrey);
-  text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  text("Artist Statement: Noisy Pixels", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
-    "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. \n\nQuis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "This sketch is a simple visual with perlin noise and linear interpolation between colors. Two colors are selected semi-randomly at startup, and a perlin function is used to select the color of each extra-large pixel drawn to the screen. Each pixel will be given a color between the two chosen colors, which are displayed in RGB form on the overlay. \n\nMany variables can be played with here, including the two colors we interpolate between, but also the amount of distinct color steps we make between our two chosen colors. The size of the pixels is also tunable, as well as the noise variability level, or speed of the sketch. ",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),

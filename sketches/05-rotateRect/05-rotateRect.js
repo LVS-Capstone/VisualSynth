@@ -28,8 +28,7 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
-  angleMode(DEGREES);
-  rectMode(CENTER);
+
 }
 
 function draw() {
@@ -43,6 +42,8 @@ function draw() {
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
 
   push();
+  angleMode(DEGREES);
+  rectMode(CENTER);
   //translate(width, height);
   stroke(255);
   pop();

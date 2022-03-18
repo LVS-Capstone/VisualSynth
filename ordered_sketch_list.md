@@ -2,9 +2,9 @@
 
 # 00-home (Rob)
 ## Previous: xx-yyyy
-## Next: 01-unnamed
+## Next: 01-noisy-pixels
 
-# 01-unnamed (Rob)
+# 01-noisy-pixels (Rob)
 ## Previous: 00-home
 ## Next: 02-emotion
 
