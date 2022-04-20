@@ -96,7 +96,7 @@ function keyPressed() {
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../xx-template/xx-template.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../06-spacePort/06-spacePort.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
