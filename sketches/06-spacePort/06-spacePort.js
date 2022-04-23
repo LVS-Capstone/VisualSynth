@@ -22,31 +22,29 @@ class star { //class for all objects in backround, stars, etc
 }
 
 class extra { //class for all objects in backround, stars, etc
-  constructor(x, y, type, color, next = null) {
+  constructor(x, y, sprite, color, next = null) {
     this.x = x; //x position
     this.y = y; //y position
-    this.type = type; //type of entity
+    this.sprite = sprite > nPngs ? loadImage('assets/gif/' + (sprite - nPngs) + '.gif') : loadImage('assets/png/' + sprite + '.png'); //type of entity
     this.color = color; //main color of entity
     this.next = next; //next entity, for linked list operations
   }
   draw(){ //draw each extra object to the screen!
-    fill(this.color);
-    noStroke();
     var effX = (this.x - screenX) * pixelSize; //effective x value to draw star
     var effY = (this.y - screenY) * pixelSize; //effective y value
 
-    image(planetArray[this.type], effX, effY);
+    image(this.sprite, effX, effY);
     if(effX < 0 || effY < 0){
-    image(planetArray[this.type], effX + (vSphereSize * pixelSize), effY);
-    image(planetArray[this.type], effX, effY + (vSphereSize * pixelSize));
-    image(planetArray[this.type], effX + (vSphereSize * pixelSize), effY + (vSphereSize * pixelSize));
+    image(this.sprite, effX + (vSphereSize * pixelSize), effY);
+    image(this.sprite, effX, effY + (vSphereSize * pixelSize));
+    image(this.sprite, effX + (vSphereSize * pixelSize), effY + (vSphereSize * pixelSize));
   }
   }
 }
 
 //variables for the background
 let pixelSize = 7; //size of pixels in background/ star map
-let vSphereSize = (1600/pixelSize) * 3; //how big is the square star map?
+let vSphereSize = Math.floor((1600/pixelSize) * 3); //how big is the square star map?
 let sparsity = 500; //controls how many objects there are total
 let entities; //array to hold stars/ entities in map
 let extras; //array to hold stars/ entities in map
@@ -67,7 +65,7 @@ let autoPan = true;
 let fineAdjust = 5;
 let xoff = 0;
 
-let planetArray;
+//let planetArray;
 let frameArray;
 
 //variables for the 'camera'
@@ -97,14 +95,6 @@ function preload() {
   frameArray = new Array(loadImage('assets/frame corner.png'),loadImage('assets/frame corner2.png'),
                         loadImage('assets/frame corner3.png'),loadImage('assets/frame corner4.png'),);
 
-
-  planetArray = new Array((nPngs + nGifs) + 1);
-  for(var i = 0; i < nPngs ; i++){
-    planetArray[i] = loadImage('assets/png/' + (i + 1) + '.png');
-  }
-  for(var j = 0; j < nGifs ; j++){
-    planetArray[j + nPngs] = loadImage('assets/gif/' + (j + 1) + '.gif');
-  }
 }
 
 function setup() {
@@ -126,7 +116,6 @@ function setup() {
   np1 = Math.floor(random(-120, 120)); //np1 = nothing parameter 1 (does nothing!)
   np2 = Math.floor(random(-120, 120));
   populate();
-
 
 }
 
@@ -156,8 +145,9 @@ function draw() {
   }
 
   //draw the stars to the screen!!
-  for(var cnt = 0;cnt < vSphereSize; cnt++){
-    var ptr = entities[cnt];
+  //console.log(screenX, vSphereSize);
+  for(var cnt = Math.floor(screenX) ; cnt < Math.floor(screenX + width); cnt++){
+    var ptr = (cnt > vSphereSize) ? entities[cnt - vSphereSize] : entities[cnt];
     while(ptr != null){
       ptr.draw();
       ptr = ptr.next;
@@ -228,7 +218,7 @@ function keyPressed() {
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "../05-rotateRect/05-rotateRect.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = "../xx-template/xx-template.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
       break;
     //Volume Dn (handled by OS)
 
@@ -467,7 +457,7 @@ function randomize() {
   sparsity = Math.floor(random(250,1400));
   nExtras = Math.floor(random(0,30));
   newFOV = 1000;
-  vSphereSize = (newFOV/pixelSize) * 3;
+  vSphereSize = Math.floor((newFOV/pixelSize) * 3);
 
   newPixelSize = pixelSize;
   newSparsity = sparsity;
@@ -504,7 +494,7 @@ function populate(){//this function populates the celestial object array, and mu
   }
 
   for(var i = 0;i < nExtras;i++){
-    extras[i] = new extra(Math.floor(random(0, vSphereSize)), Math.floor(random(0, vSphereSize)), Math.floor(random(0,nPngs + nGifs)), swatchable_pastel(0));
+    extras[i] = new extra(Math.floor(random(0, vSphereSize)), Math.floor(random(0, vSphereSize)), Math.floor(random(1,nPngs + nGifs)), null);
   }
 }
 
