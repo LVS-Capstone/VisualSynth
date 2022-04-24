@@ -10,6 +10,27 @@ let keyCream;
 let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+//array to hold cels (used to setup the grid)
+let cells = [];
+//array to switch cells displayed (Drop animation)
+let drops = [];
+//Cell Size
+let cellSize = 20;
+let numRows;
+let numCols;
+//Probability variable for swapping symbols
+let symbolSwapProb = 0.01;
+//variable for drop speed
+//Set no. of frames the drop will move down 2 cols.
+let dropTimeout = 2;
+//Offscreen means the variables will appear as if they are flowing into and out of the screen.
+//Maxoffscreen
+let maxOffscreen = 200;
+//variable for time limit for a sybmbol to stay lit
+let brightTime = 60;
+//Variable for changing language
+var lang;
+
 
 function setup() {
   frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
@@ -26,7 +47,24 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
+  //Setting the size of the characters. Defualt is 12
+  colorMode(HSB);
+  textSize(16);
 
+  numRows = ceil(height / cellSize);
+  numCols = ceil(width / cellSize);
+
+  for (let i = 0; i < numRows; i++){
+    let newRow = [];
+    for (let j = 0; j < numCols; j++) {
+      newRow.push(new Cell(j * cellSize, i * cellSize));
+    }
+    cells.push(newRow);
+  }
+
+  for (let j = 0; j < numCols; j++) {
+    drops.push(new Drop(j));
+  }
 }
 
 function draw() {
@@ -38,6 +76,20 @@ function draw() {
   background(210);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
+  background(0);
+  //call the draw method described in Drop class to drop the symbol
+  drops.forEach(drop => {
+    drop.update();
+    drop.brightenCell();
+  });
+  //call the draw method described in Cell class to write the symbol
+  cells.forEach(row => {
+    row.forEach(cell => {
+      cell.draw();
+      cell.update();
+
+    });
+  });
 
   push(); //store sketch specific drawing settings
   if (info) {
@@ -120,10 +172,19 @@ function keyPressed() {
 
     //encoder 4
     case 57: //9 ()
+      //Character code for chinese symbols
+      let chinese = String.fromCharCode(random(19968, 40959));
+      lang = chinese;
       break;
     case 48: //0 ()
+       //japanese characters
+      let jap =  String.fromCharCode(random(12448, 12543));
+      lang = jap;
       break;
     case 66: //B ()
+      //Hindi Characters
+      let hindi =  String.fromCharCode(random(2304, 2423));
+      lang = hindi;
       break;
 
     //encoder 5
@@ -256,4 +317,87 @@ function drawKnob(posX, posY, var_name, value, state, knobFill, knobStroke) {
 
 function randomize() {
   //function called by the randomize values key: must be filled with sketch specific variables
+}
+
+//Class for Cells
+class Cell {
+  constructor(x, y){
+    this.x = x;
+    this.y = y;
+    this.symbol = this.getRandomSymbol();
+    this.brightness = 0;
+    this.litTimer = 0;
+  }
+
+
+  //Will be adding User interaction to change languages
+  getRandomSymbol() {
+    //English letters
+    let eng = random("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+    lang = eng;
+    return (lang);
+  }
+  //Method to set the brightness of each cell that is displayed
+  brighten() {
+    this.brightness = 100;
+  }
+
+  //Method to update the cells. This will change the letters of the cell depending on the probabilty as shown in the actual animation
+  //will randomly change the symbols.
+  update() {
+    if (random() < symbolSwapProb) {
+      this.symbol = this.getRandomSymbol();
+    }
+    if (this.brightness > 0) {
+      this.brightness = 80;
+      this.litTimer =  (this.litTimer + 1) % brightTime;
+
+      if (this.litTimer === 0) {
+        this.brightness = 0;
+      }
+    }
+  }
+
+  draw() {
+    fill(100, 100, this.brightness);
+    text(this.symbol, this.x, this.y);
+  }
+}
+
+//Drop Class
+class Drop {
+  constructor(col) {
+    this.row = 0;
+    this.col = col;
+    this.dropTimeout = 0;
+    this.offScreenTimeout = floor(random(maxOffscreen));
+    this.offScreen = true;
+  }
+
+  update() {
+    if (this.offScreen) {
+      this.offScreenTimeout = (this.offScreenTimeout + 1) % maxOffscreen;
+
+      if (this.offScreenTimeout === 0){
+        this.offScreen = false;
+      }
+    } else {
+      this.dropTimeout = (this.dropTimeout + 1) % dropTimeout;
+
+      if (this.dropTimeout === 0){
+        this.row++;
+      }
+
+      if (this.row === numRows){
+        this.row = 0;
+        this.offScreen = true;
+        this.offScreenTimeout = floor(random(maxOffscreen));
+      }
+    }
+  }
+
+  brightenCell() {
+    if (!this.offScreen)
+     cells[this.row][this.col].brighten();
+  }
 }
