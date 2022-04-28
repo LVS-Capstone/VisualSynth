@@ -1,6 +1,6 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
 let hud = false; //hud default state
-let info = true; //info panel default state
+let info = false; //info panel default state
 let paused = false; //pause default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
@@ -10,6 +10,13 @@ let keyCream;
 let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+let tutorial = true;
+let navMenu = false;
+let selectedSketch = 1;
+let nSketches = 9;
+let sketchNames;
+let sketchImages;
+let sketchURLS;
 
 //background
 //let color1 = new Array(64, 64, 64); //array to hold value of first color
@@ -34,13 +41,23 @@ function setup() {
     width = 1024; //set the width and height of the screen to match the display
     height = 1280;
   }
-  fontOS = loadFont('fonts/OpenSans-Medium.ttf');//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~don't forget to fix this path!!!!!!!
+  fontOS = loadFont('fonts/OpenSans-Medium.ttf');
   keybinds = loadImage('assets/keybinds.png');
   keyCream = color(235, 235, 215);
   keyGrey = color(10, 10, 10);
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
+
+
+  sketchNames = new Array(null, "Menu: Noisy Pixels", "SpacePort Window", "Good Morning", "Mandala", "Spiral", "Matrix", "Dice", "Splatter", "Music");
+  sketchURLS = new Array(null, 'index.html', 'sketches/01-spacePort/01-spacePort.html', 'sketches/02-goodMorning/02-goodMorning.html', 'sketches/03-mandala/03-mandala.html', 'sketches/04-spiral/04-spiral.html', 'sketches/05-matrix/05-matrix.html', 'sketches/06-dice/06-dice.html', 'sketches/07-splatter/07-splatter.html', 'sketches/08-music/08-music.html');
+  sketchImages = new Array(nSketches + 1);
+  for(var i = 1;i <= nSketches;i++){
+    sketchImages[i] = loadImage('assets/thumbnails/' + (i - 1) + '.png');
+  }
+  console.log(sketchImages);
+
   pixelSize = 110;
   var clf = floor(random(0,3)); //color family for sketch initialization
   var cl1 = swatchable(clf);
@@ -87,7 +104,13 @@ function draw() {
   if (info) {
     drawInfo();
   } //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
-  if (hud || info) {
+  if (tutorial) {
+      drawTutorial();
+      }
+  if (navMenu) {
+    drawNav();
+  }
+  if (hud || info || tutorial || navMenu) {
     translate((width-hudWidth)/2, 0);
     drawHud();
   } //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
@@ -108,44 +131,57 @@ function keyPressed() {
       hud = !hud; //swap the value of the hud variable when the 'A' Key is pressed.
       break;
     case 87: //W (Home)
-      window.location.href = "index.html"; //redirect current page to sketch 0, the home menu
+      window.location.href = "../../index.html"; //redirect current page to sketch 0, the home menu
       break;
     case 69: //E (Pause)
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "sketches/06-spacePort/06-spacePort.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../01-spacePort/01-spacePort.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
       info = !info;
+      tutorial = false;
+      navMenu = false;
       break;
     case 83: //S (Randomize Sketch Variables, must be implemented per sketch)
       randomize();
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "../../index.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = "../sketches/08-music/08-music.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
       break;
     //Volume Dn (handled by OS)
 
     //encoders
     //encoder 0
     case 49: //1 (cl1 red)
-      if(color1[0] > 0){
-        color1[0]-=2;
+      if(!navMenu){
+        if(color1[0] > 0){
+          color1[0]-=2;
+        }else{
+          color1[0] = 0;
+        }
       }else{
-        color1[0] = 0;
+        selectedSketch = selectedSketch <= 1 ? nSketches : selectedSketch - 1;
       }
       break;
     case 50: //2 ()
-      if(color1[0] < 255){
-        color1[0]+=2;
+      if(!navMenu){
+        if(color1[0] < 255){
+          color1[0]+=2;
+        }else{
+          color1[0] = 255;
+        }
       }else{
-        color1[0] = 255;
+        selectedSketch = selectedSketch >= nSketches ? 1 : selectedSketch + 1;
       }
       break;
     case 90: //Z ()
+      if(navMenu){
+        window.location.href = sketchURLS[selectedSketch];
+      }
       break;
 
     //encoder 1
@@ -253,7 +289,10 @@ function keyPressed() {
     case 79: //O (more variablility (speed))
       variability+=0.002;
       break;
-    case 80: //P ()
+    case 80: //P (Toggle Tutorial)
+      tutorial = !tutorial;
+      info = false;
+      navMenu = false;
       break;
     case 72: //H (fewer steps)
       if(steps > 1){
@@ -275,7 +314,10 @@ function keyPressed() {
          variability-=0.002;
          }
       break;
-    case 59: //; ()
+    case 59: //; (navigation menu)
+      navMenu = !navMenu;
+      info = false;
+      tutorial = false;
       break;
     default:
       return false;
@@ -307,21 +349,30 @@ function drawHud() {
   drawKey(keyWidth * 9, height - keyWidth * 2, "Size+", "", keyCream, keyGrey); //Key 11 ()
   drawKey(keyWidth * 10, height - keyWidth * 2, "Remix Color1", "", keyCream, keyGrey); //Key 12 ()
   drawKey(keyWidth * 11, height - keyWidth * 2, "Speed+", "", keyCream, keyGrey); //Key 13 ()
-  drawKey(keyWidth * 12, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 14 ()
+  drawKey(keyWidth * 12, height - keyWidth * 2, "Tutorial", "", keyCream, keyGrey); //Key 14 ()
   drawKey(keyWidth * 8, height - keyWidth, "Steps-", steps, keyCream, keyGrey); //Key 15 (Decrease Steps)
   drawKey(keyWidth * 9, height - keyWidth, "Size-", pixelSize, keyCream, keyGrey); //Key 16 ()
   drawKey(keyWidth * 10, height - keyWidth, "Remix Color2", "", keyCream, keyGrey); //Key 17 ()
   drawKey(keyWidth * 11, height - keyWidth, "Speed-", Math.floor(variability * 1000) / 10, keyCream, keyGrey); //Key 18 ()
-  drawKey(keyWidth * 12, height - keyWidth, "", "", keyCream, keyGrey); //Key 19 ()
+  drawKey(keyWidth * 12, height - keyWidth, "Sketch Select", "", keyCream, keyGrey); //Key 19 ()
 
   //draw sketch control knobs
   //knobs are drawn by drawKnob method. Parameters: x positon, y position, label, value, state, fill, stroke
+  if(!navMenu){ //we don't draw the standard knobs if we are in the nav menu
   drawKnob(keyWidth * 5, height - keyWidth * 2, "Color A", color1[0], "Red", keyCream, keyGrey); //Knob 0 ()
   drawKnob(keyWidth * 6, height - keyWidth * 2, "", color1[1], "Green", keyCream, keyGrey); //Knob 1 ()
   drawKnob(keyWidth * 7, height - keyWidth * 2, "", color1[2], "Blue", keyCream, keyGrey); //Knob 2 ()
   drawKnob(keyWidth * 5, height - keyWidth, "Color B", color2[0], "Red", keyCream, keyGrey); //Knob 3 ()
   drawKnob(keyWidth * 6, height - keyWidth, "", color2[1], "Green", keyCream, keyGrey); //Knob 4 ()
   drawKnob(keyWidth * 7, height - keyWidth, "", color2[2], "Blue", keyCream, keyGrey); //Knob 5 ()
+              }else{
+  drawKnob(keyWidth * 5, height - keyWidth * 2, "Select", selectedSketch, "Sketch", keyCream, keyGrey);//Knob 0 ()
+  drawKnob(keyWidth * 6, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 1 ()
+  drawKnob(keyWidth * 7, height - keyWidth * 2, "", 0, "", keyCream, keyGrey); //Knob 2 ()
+  drawKnob(keyWidth * 5, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 3 ()
+  drawKnob(keyWidth * 6, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 4 ()
+  drawKnob(keyWidth * 7, height - keyWidth, "", 0, "", keyCream, keyGrey); //Knob 5 ()
+  }
 }
 
 function drawInfo() {
@@ -335,16 +386,69 @@ function drawInfo() {
   rectMode(CORNER);
   stroke(keyCream);
   fill(keyGrey);
-  text("Live Visual Synth - Home", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  text("Noisy Pixels - Rob Tyndall", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
-    "Welcome to the Live Visual Synth, or LVS, an interactive art platform! \n\n\nControls \nThe controls of the LVS are displayed at the bottom of the screen, and appear as they do on the physical LVS console. These controls also function on the LVS website, and can be used on any standard keyboard. Each sketch on the LVS will have it's own unique controls, which can be displayed at any time. \n\nNoisy Pixels\nThis sketch is a simple visual with perlin noise and linear interpolation between colors. Two colors are selected semi-randomly at startup, and a perlin function is used to select the color of each extra-large pixel drawn to the screen. Each pixel will be given a color between the two chosen colors, which are displayed in RGB form on the controls overlay. \n\nMany variables can be played with here, including the two colors we interpolate between, but also the amount of distinct color steps we make between our two chosen colors. The size of the pixels is also tunable, as well as the noise variability level, or speed of the sketch. Try pressing the \'Shuffle Params\' button to remix the display!\n\nIf you're visiting LVS from the web, the image below shows the standard keyboard keys used to interact with LVS sketches.",
+    "Overview:\n\nNoisy Pixels is a procedural animation that primarily uses parametric color generation, perlin noise, and linear interpolation between colors. The primary data structure is an array containing a series of colors. At one end of the array is \’Color 1\’, and at the other end \’Color 2\’. Between these two endpoints the rest of the array is filled with the colors that fall between these colors in RGB space. For each frame, each extra large pixel drawn to the screen is assigned a color based on a perlin noise function, which is what makes the color of any individual pixel change organically from one frame to the next.\n\nInteractivity:\nThe interactivity of this sketch allows for control of the two colors forming the endpoints of the color array, as well as control of the amount of distinct colors between these endpoints, or \’Steps\’. The size of the pixels can be changed with the \’Size\’ controls. The \’Speed\’ controls change the variability of the noise function, which makes the colors change more slowly or rapidly. The \’Remix\’ controls change only the selected color, and the \’Shuffle\’ control randomizes all of the variables at once!",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),
     height * 0.5
   );
-  image(keybinds, (width * 0.5) - (hudWidth * 0.35), height * 0.625, (hudWidth * 0.7), height * 0.10684);
+}
+
+function drawTutorial() {
+  strokeWeight(1.5);
+  textFont(fontOS);
+  textSize(25);
+  fill(keyCream);
+  stroke(keyGrey);
+  rectMode(CENTER);
+  rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 2);
+  rectMode(CORNER);
+  stroke(keyCream);
+  fill(keyGrey);
+  text("Live Visual Synth - Getting Started", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  textSize(16);
+  text(
+    "Welcome to the Live Visual Synth, or LVS, an interactive art platform!\n\n\nControls\nThe controls of the LVS are displayed at the bottom of the screen, and appear as they do on the physical LVS console. These controls also function on the LVS website, and can be used on any standard keyboard with the key values shown below. Each sketch on the LVS will have its own unique controls, which can be displayed at any time with the \'Overlay\' key \(Q\).\n\nNavigation\nNavigating between different sketches on the LVS system or website is accomplished by clicking the \‘Previous Sketch\’ \(R\), or ‘Next Sketch’ \(F\) keys. Additionally, this introductory sketch has a sketch navigation menu which is opened by pressing \‘Sketch Select\’ \(\;\).\n\nYou can hide or recall this menu with the \'Tutorial\' key \(P\).",
+    (width * 0.5) - (hudWidth * 0.35),
+    height * 0.21,
+    (hudWidth * 0.7),
+    height * 0.5
+  );
+  image(keybinds, (width * 0.5) - (hudWidth * 0.35), height * 0.625, (hudWidth * 0.7), (hudWidth * 0.124));
+}
+
+function drawNav() {
+  strokeWeight(1.5);
+  textFont(fontOS);
+  textSize(25);
+  fill(keyCream);
+  stroke(keyGrey);
+  rectMode(CENTER);
+  rect(width * 0.5, height * 0.45, hudWidth * 0.8, height * 0.66, 2);
+  rect(width * 0.5, height * 0.45, height * 0.4, height * 0.4, 2);
+  rectMode(CORNER);
+  stroke(keyCream);
+  fill(keyGrey);
+  text("Select Sketch", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  textSize(16);
+  text(
+    "Sketch " + selectedSketch + ": " + sketchNames[selectedSketch],
+    (width * 0.5) - (hudWidth * 0.35),
+    height * 0.21,
+    (hudWidth * 0.7),
+    height * 0.5
+  );
+  imageMode(CENTER);
+  image(sketchImages[selectedSketch], width * 0.5, height * 0.45, height * 0.4, height * 0.4);
+    text("\n\nUse the \'Select Sketch\' Knob to select a sketch, and press the knob when you have made your selection. Keyboard users select with \'1\' and \'2\' and confirm with \'Z\'",
+    (width * 0.5) - (hudWidth * 0.35),
+    height * 0.65,
+    (hudWidth * 0.7),
+    height * 0.1
+  );
 }
 
 function drawKey(posX, posY, var_name, state, keyFill, keyStroke) {
