@@ -131,13 +131,13 @@ function keyPressed() {
       hud = !hud; //swap the value of the hud variable when the 'A' Key is pressed.
       break;
     case 87: //W (Home)
-      window.location.href = "../../index.html"; //redirect current page to sketch 0, the home menu
+      window.location.href = "index.html"; //redirect current page to sketch 0, the home menu
       break;
     case 69: //E (Pause)
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../01-spacePort/01-spacePort.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "sketches/01-spacePort/01-spacePort.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
@@ -150,7 +150,7 @@ function keyPressed() {
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "../sketches/08-music/08-music.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = "sketches/08-music/08-music.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
       break;
     //Volume Dn (handled by OS)
 
