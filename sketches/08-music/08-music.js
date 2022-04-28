@@ -33,7 +33,7 @@ function setup() {
   keyCream = color(235, 235, 215);
   keyGrey = color(10, 10, 10);
   textFont(fontOS);
-  bg = loadImage('underground.png');
+  bg = loadImage('assets/underground.png');
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
   //Uses Tone.js library for p5 to create music
@@ -184,15 +184,15 @@ function keyPressed() {
 
     //second bank of keys:
     case 89: //Y (Scene 1)
-      bg = loadImage('underground.png');
+      bg = loadImage('assets/underground.png');
       break;
 
     case 85: //U (Scene 2)
-      bg = loadImage('bloodmoon.png');
+      bg = loadImage('assets/bloodmoon.png');
       break;
 
     case 73: //I (Scene 3)
-      bg = loadImage('fall.png');
+      bg = loadImage('assets/fall.png');
       break;
     case 79: //O (Stop)
       Tone.Transport.pause();
