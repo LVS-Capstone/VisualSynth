@@ -1,7 +1,7 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
-let hud = true; //hud default state
+let hud = false; //hud default state
 let info = false; //info panel default state
-let paused = false; //hud default state
+let paused = false; //pause default state
 let debug = false; //sets screen size to LVS monitor dimensions
 let hudWidth = 0; //initialize variable for width of the hud (set in setup)
 let keyWidth;
@@ -9,32 +9,12 @@ let fontOxy;
 let keyCream;
 let keyGrey;
 
-//These variables control different settings such as new dots, reverse, and whether to break the swirl or not.
-let newfire = false;
-let speedy = false;
-let breaker = false;
-
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
-//The curve is the angle at which
-var curver = 1.0;
-//Target is the initial x position of the swirl
-var target = 375;
-//This is the space between one ring and the next in the swirl
-var spacer = 2.5;
-//This is the speed at which the dots are placed.
-var speed = 0.4;
-//These are the color variables.
-var col = {
-  r: 255,
-  g: 0,
-  b: 0
-};
-//flag for random colors
+let slinky;
+let shade = 255;
 
 function setup() {
-  //changed framrate for smoother transition colors
-  frameRate(32);
-
+  frameRate(32); //base framerate is set to 32, can be changed for a given sketch, so long as the pi can handle it.
   createCanvas(windowWidth, windowHeight);
   hudWidth = Math.min(1024, width); //set the width of the hud to the screen width if below 1024px
   keyWidth = hudWidth / 13;
@@ -48,7 +28,10 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
-  background(9);
+  slinky = createGraphics(width, height, WEBGL);
+  slinky.angleMode(DEGREES);
+  slinky.setAttributes('antialias', true);
+  shape = POINTS;
 
 
 }
@@ -59,46 +42,42 @@ function draw() {
     text("Paused", 50, 50);
     return;
   }
-
+  background(36);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
-  //Breaker is for breaking the swirl and making random dots on the canvas
-  if (breaker == true){
-    target = random(0, windowWidth);
+
+  slinky.push();
+  angleMode(DEGREES);
+  slinky.background(10);
+  slinky.rotateX(60);
+  slinky.noFill();
+
+  slinky.strokeWeight(6);
+
+  //slinky.push();
+  for(var i = 0; i < width / 20; i += 4) {
+      slinky.beginShape(shape);
+
+      var r = map(sin(frameCount/2),-1, 1, 100, 200);
+      var g = map(i,0,20,0, shade);
+      var b = map(cos(frameCount),-1,0,255,0)
+
+      slinky.stroke(r,g,b);
+      for(var j = 0; j < 360; j += 10)
+      {
+        var rad = i * 8;
+        var x = rad * cos(j);
+        var y = rad * sin(j);
+        var z = sin(frameCount * 2 + i * 10) * 50;
+
+        //slinky.circle(x, y, z);
+        slinky.vertex(x, y, z);
+      }
+      slinky.endShape(CLOSE);
   }
+  slinky.pop();
 
-  //Newfire is just for testing in the editor. It will make a streak of dots that only follow the mouse if mouse support is added to hardware
-  if (newfire == true){
-    col.r = random(0, 250);
-    col.g = random(0, 250);
-    col.b = random(0, 250);
-    fill(col.r, col.g, col.b);
-    circ = random(1, 40);
-    ellipse(mouseX, mouseY, circ, circ);
-  }
-
-  //Speedy will flip the swirl, making it travel in the opposite direction.
-  if (speedy == true){
-    speed = 1.5;
-  }
-
-  //Default swirl, this will just make a swirl from the middle of the canvas with no special attributes.
-  //Colors are random
-  col.r = random(0, 250);
-  col.g = random(0, 250);
-  col.b = random(0, 250);
-
-  //x and y coordinates of the ellipse are chosen through these formulas
-  var x = target + cos(curver) * spacer;
-  var y = target + sin(curver) * spacer;
-  fill(col.r, col.g, col.b);
-
-
-  ellipse(x, y, 10, 10);
-
-  //curver and spacer are incremented up to create the actual swirl.
-  curver += speed;
-  spacer += speed;
+  image(slinky, 0, 0, width, height);
 
   push(); //store sketch specific drawing settings
   if (info) {
@@ -131,7 +110,7 @@ function keyPressed() {
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../09-clock/09-clock.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../11-night/11-night.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
@@ -142,23 +121,27 @@ function keyPressed() {
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "../06-dice/06-dice.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = "../09-clock/09-clock.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
       break;
     //Volume Dn (handled by OS)
 
     //encoders
     //encoder 0
     case 49: //1 ()
+
       break;
     case 50: //2 ()
+
       break;
     case 90: //Z ()
       break;
 
     //encoder 1
     case 51: //3 ()
+
       break;
     case 52: //4 ()
+
       break;
     case 88: //X ()
       break;
@@ -196,39 +179,21 @@ function keyPressed() {
       break;
 
     //second bank of keys:
-    case 89: //Y (New Ring)
-      //Creates a new ring and cuts the current one short
-      curver = curver + 10;
-      var x = x + 20;
+    case 89: //Y ()
+      shape = LINES
       break;
-
-    case 85: //U (Reversal)
-    //flips the direction of the swirl
-      speedy = true;
+    case 85: //U ()
+      shape = POINTS
       break;
-
-    case 73: //I (Break Swirl)
-    //Destroys the ellipse, resulting in random placement of dots.
-      breaker = true;
+    case 73: //I ()
+       if(shade < 255)
+      shade += 10;
       break;
-
-    case 79: //O (Brush)
-    //Create a swirl at the mouse position
-      newfire = true;
+    case 79: //O ()
+      if(shade > 0)
+      shade -= 10;
       break;
-
-    case 80: //P (Full Reset)
-    //Restore original settings
-      curver = 1.0;
-      speed = 0.4;
-      col = {
-      r: 255,
-      g: 0,
-      b: 0
-    };
-    newfire = false;
-    speedy = false;
-    breaker = false;
+    case 80: //P ()
       break;
     case 72: //H ()
       break;
@@ -266,11 +231,11 @@ function drawHud() {
 
   //draw sketch control keys
   //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
-  drawKey(keyWidth * 8, height - keyWidth * 2, "New Ring", "", keyCream, keyGrey); //Key 10 ()
-  drawKey(keyWidth * 9, height - keyWidth * 2, "Reversal", "", keyCream, keyGrey); //Key 11 ()
-  drawKey(keyWidth * 10, height - keyWidth * 2, "Break Swirl", "", keyCream, keyGrey); //Key 12 ()
-  drawKey(keyWidth * 11, height - keyWidth * 2, "Brush", "", keyCream, keyGrey); //Key 13 ()
-  drawKey(keyWidth * 12, height - keyWidth * 2, "Full Reset", "", keyCream, keyGrey); //Key 14 ()
+  drawKey(keyWidth * 8, height - keyWidth * 2, "Dots", "", keyCream, keyGrey); //Key 10 ()
+  drawKey(keyWidth * 9, height - keyWidth * 2, "Lines", "", keyCream, keyGrey); //Key 11 ()
+  drawKey(keyWidth * 10, height - keyWidth * 2, "Green+", "", keyCream, keyGrey); //Key 12 ()
+  drawKey(keyWidth * 11, height - keyWidth * 2, "Green-", "", keyCream, keyGrey); //Key 13 ()
+  drawKey(keyWidth * 12, height - keyWidth * 2, "", "", keyCream, keyGrey); //Key 14 ()
   drawKey(keyWidth * 8, height - keyWidth, "", "", keyCream, keyGrey); //Key 15 ()
   drawKey(keyWidth * 9, height - keyWidth, "", "", keyCream, keyGrey); //Key 16 ()
   drawKey(keyWidth * 10, height - keyWidth, "", "", keyCream, keyGrey); //Key 17 ()
@@ -298,10 +263,10 @@ function drawInfo() {
   rectMode(CORNER);
   stroke(keyCream);
   fill(keyGrey);
-  text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  text("Satisfying Wave By Edgar Olivares:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
-    "Splatter - This is a visual sketch where the user can alter how the swirl spins and what the canvas will ultimately look like. It is meant to simulate splatter painting, which is a type of painting. The swirl will spin on its own and the user can use the various buttons to manipulate it to make their own unique canvas. Use the New Ring button to stop the current ring in the swirl and skip to the next. Use Reversal to flip the direction the swirl is spinning in. Use Breaker to completely remove the swirl and randomly scatter dots around the canvas. Brush will create a trail of random dots behind the cursor, so it requires mouse support. Finally, use Full Reset to undo these settings, all except the target, creating a new swirl at that target location.",
+    "Description: This sketch is a circular wave made with dots and user can change to lines, and wave changes color gradully on its, user can increase or decrease the green value in the wave\n\nInteractivity:\nPress 3 to decrease the green value or press 4 to increase\nPress Y to change wave to lines\nPress U to change wave to dats (default shape)",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),
