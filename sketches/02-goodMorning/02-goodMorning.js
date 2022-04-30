@@ -164,9 +164,10 @@ let WTY; //weapon tip y component
 let ax = 0; //acceleration in x direction
 let ay = 0; //acceleration in y direction
 let dropSize; //pixel size for droplets
+let pbg; //holder for startup background
 
 function preload(){ //images and levels are pre-loaded here
-
+pbg = loadImage('assets/3/toilet.png');
 }
 
 function setup() {
@@ -204,6 +205,7 @@ function setup() {
   WTY = height * (0.95 - (0.18 * sin(weaponAngle + 90))); //weapon tip y value
 
   //levelArray[currentLevel].draw();
+    image(pbg, (width - (height * 0.804))/2 , 0, height * 0.804, height);
 }
 
 function draw() {
