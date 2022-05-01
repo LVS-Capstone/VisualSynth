@@ -266,7 +266,7 @@ function drawInfo() {
   text("Satisfying Wave By Edgar Olivares:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
-    "Description: This sketch is a circular wave made with dots and user can change to lines, and wave changes color gradully on its, user can increase or decrease the green value in the wave\n\nInteractivity:\nPress 3 to decrease the green value or press 4 to increase\nPress Y to change wave to lines\nPress U to change wave to dats (default shape)",
+    "Description: This sketch is a circular wave made with dots and user can change to lines, and wave changes color gradully on its, user can increase or decrease the green value in the wave\n\nInteractivity:\nPress O to decrease the green value or press I to increase\nPress Y to change wave to lines\nPress U to change wave to dats (default shape)",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),
