@@ -128,7 +128,7 @@ function draw() {
     drawInfo();
   } //call the function that draws the info pane, if the info variable is true. Must come at the end of the draw function.
   if (hud || info) {
-    translate((width-hudWidth)/2, 0);
+    //translate((width-hudWidth)/2, 0);
     drawHud();
   } //call the function that draws the hud, if the hud or info variable is true. Must come at the end of the draw function.
   pop(); //restore sketch specific drawing settings

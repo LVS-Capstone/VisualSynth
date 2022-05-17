@@ -1,5 +1,5 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
-let hud = true; //hud default state
+let hud = false; //hud default state
 let info = false; //info panel default state
 let paused = false; //hud default state
 let debug = false; //sets screen size to LVS monitor dimensions
@@ -58,42 +58,53 @@ function draw() {
   if (dinum == 6){
     blink = random(rolls);
     if (blink == 1){
-      circle(windowWidth/2, windowHeight/2, 100);
+      circle(width/2, height/2, 100);
     }
 
     else if (blink == 2){
-      circle(windowWidth - 550, windowHeight - 420, 100);
-      circle(550, 420, 100);
+      circle(height * 0.25, height * 0.25, 100);
+      circle(height - (height * 0.025), height - (height * 0.25), 100);
     }
 
     else if (blink == 3){
       circle(windowWidth/2, windowHeight/2, 100);
-      circle(windowWidth - 550, windowHeight - 420, 100);
-      circle(550, 420, 100);
+
+      circle(height * 0.25, height * 0.25, 100);
+      circle(height - (height * 0.025), height - (height * 0.25), 100);
+
+      //old positions
+      //circle(windowWidth - 550, windowHeight - 420, 100);
+      //circle(550, 420, 100);
     }
 
     else if (blink == 4){
-      circle(windowWidth - 550, windowHeight - 420, 100);
-      circle(550, 420, 100);
-      circle(windowWidth - 550, 420, 100);
-      circle(550, windowHeight - 420, 100);
+      //circle(windowWidth - 550, windowHeight - 420, 100);
+      //circle(550, 420, 100);
+
+      //circle(windowWidth - 550, 420, 100);
+      //circle(550, windowHeight - 420, 100);
+
+      circle(height * 0.25, height * 0.25, 100);
+      circle(height - (height * 0.025), height * 0.25, 100);
+      circle(height * 0.25, height - (height * 0.25), 100);
+      circle(height - (height * 0.025), height - (height * 0.25), 100);
     }
 
     else if (blink == 5){
-      circle(windowWidth/2, windowHeight/2, 100);
-      circle(windowWidth - 550, windowHeight - 420, 100);
-      circle(550, 420, 100);
-      circle(windowWidth - 550, 420, 100);
-      circle(550, windowHeight - 420, 100);
+      circle(height * 0.25, height * 0.25, 100);
+      circle(height - (height * 0.025), height * 0.25, 100);
+      circle(height * 0.25, height - (height * 0.25), 100);
+      circle(height - (height * 0.025), height - (height * 0.25), 100);
+      circle(width/2, height/2, 100);
     }
 
     else if (blink == 6){
-      circle(windowWidth - 550, windowHeight - 420, 100);
-      circle(550, 420, 100);
-      circle(windowWidth - 550, 420, 100);
-      circle(550, windowHeight - 420, 100);
-      circle(550, windowHeight/2, 100);
-      circle(windowWidth- 550, windowHeight/2, 100);
+      circle(height * 0.25, height * 0.25, 100);
+      circle(height - (height * 0.025), height * 0.25, 100);
+      circle(height * 0.25, height - (height * 0.25), 100);
+      circle(height - (height * 0.025), height - (height * 0.25), 100);
+      circle(height * 0.25, height/2, 100);
+      circle(height - (height * 0.025), height/2, 100);
     }
   }
 

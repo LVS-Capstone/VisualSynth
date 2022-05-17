@@ -10,6 +10,8 @@ let keyCream;
 let keyGrey;
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
+let bg;
+
 var noiseScale = 100;
 var phase = 0;
 
@@ -29,7 +31,9 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
-  noiseDetail(1, 0);
+  bg = createGraphics(width, height);
+
+  bg.noiseDetail(1, 0);
   genNoiseImg();
 }
 
@@ -41,41 +45,43 @@ function draw() {
   }
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
-  push()
-  tint(255, 5);
-  image(noiseImg, 0, 0);
-  pop()
+  bg.push()
+  bg.tint(255, 5);
+  bg.image(noiseImg, 0, 0);
+  bg.pop()
 
   for(let i = -700; i<width+100; i+= 100) {//row
     for(let j = -700; j<height+100; j+= 100)//columns
       {
-        push();
-        fill(255);
-        stroke(1, 7, 92);
-        strokeWeight(1);
-        rotate(PI*0.3);
-        ellipse(i,j,random(5),random(5))
-        pop();
+        bg.push();
+        bg.fill(255);
+        bg.stroke(1, 7, 92);
+        bg.strokeWeight(1);
+        bg.rotate(PI*0.3);
+        bg.ellipse(i,j,random(5),random(5))
+        bg.pop();
 
 
       }
   }
 
-  push(); //gives the glowing effect to the moon
-    noStroke();
-    colorMode(HSB, 360, 100, 100, 100);
-    drawingContext.shadowBlur = 12;
-    drawingContext.shadowColor = color(207, 7, 99);
-    circle(width-(width/6),height/6, 200);
-  pop();
+  bg.push(); //gives the glowing effect to the moon
+    bg.noStroke();
+    bg.colorMode(HSB, 360, 100, 100, 100);
+    bg.drawingContext.shadowBlur = 12;
+    bg.drawingContext.shadowColor = color(200, 200, 200);
+    bg.circle(width-(width/6),height/6, 200);
+  bg.pop();
 
-  push();
+  bg.push();
     if(fullMoon==false)
     {
-      fill(3,3,3)
-      circle(width-(width/6)-phase,height/6,200);
+      bg.fill(3,3,3)
+      bg.circle(width-(width/6)-phase,height/6,200);
     }
-  pop();
+  bg.pop();
+
+  image(bg, 0, 0);
 
   push(); //store sketch specific drawing settings
   if (info) {
