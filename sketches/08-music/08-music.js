@@ -1,5 +1,5 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
-let hud = true; //hud default state
+let hud = false; //hud default state
 let info = false; //info panel default state
 let paused = false; //hud default state
 let debug = false; //sets screen size to LVS monitor dimensions
@@ -118,7 +118,7 @@ function keyPressed() {
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../../index.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../09-clock/09-clock.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)

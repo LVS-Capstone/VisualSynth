@@ -267,9 +267,9 @@ function drawInfo() {
   stroke(keyCream);
   fill(keyGrey);
   text("Spiral - Sahil Zaveri", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
-  textSize(18);
+  textSize(16);
   text(
-    "Overview: \nThis is my take on an abratract spiral animation. The inspiration behind this sketch was to make something that a person can stare at and get lost in thought. \n\nInteractivity: \nThis sketch comes with an interactive component which allows you change the background color. \nTo change the background to a random color, press the \"U\" key.\nTo go back to the default background color, press the \"I\" key.",
+    "Overview: \n\nThis is my take on an abratract spiral animation. The inspiration behind this sketch was to make something that a person can stare at and get lost in thought. \n\nInteractivity: \nThis sketch comes with an interactive component which allows you change the background color. \nTo change the background to a random color, press the \"U\" key.\nTo go back to the default background color, press the \"I\" key.",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),

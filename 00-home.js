@@ -13,7 +13,7 @@ let keyGrey;
 let tutorial = true;
 let navMenu = false;
 let selectedSketch = 1;
-let nSketches = 11;
+let nSketches = 12;
 let sketchNames;
 let sketchImages;
 let sketchURLS;
@@ -50,8 +50,8 @@ function setup() {
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
 
 
-  sketchNames = new Array(null, "Menu: Noisy Pixels", "SpacePort Window", "Good Morning", "Mandala", "Spiral", "Matrix", "Dice", "Splatter", "Clock", "Wave", "Night");
-  sketchURLS = new Array(null, 'index.html', 'sketches/01-spacePort/01-spacePort.html', 'sketches/02-goodMorning/02-goodMorning.html', 'sketches/03-mandala/03-mandala.html', 'sketches/04-spiral/04-spiral.html', 'sketches/05-matrix/05-matrix.html', 'sketches/06-dice/06-dice.html', 'sketches/07-splatter/07-splatter.html', 'sketches/09-clock/09-clock.html', 'sketches/10-wave/10-wave.html', 'sketches/11-night/11-night.html');
+  sketchNames = new Array(null, "Menu: Noisy Pixels", "SpacePort Window", "Good Morning", "Mandala", "Spiral", "Matrix", "Dice", "Splatter", "Music Maker", "Clock", "Wave", "Night");
+  sketchURLS = new Array(null, 'index.html', 'sketches/01-spacePort/01-spacePort.html', 'sketches/02-goodMorning/02-goodMorning.html', 'sketches/03-mandala/03-mandala.html', 'sketches/04-spiral/04-spiral.html', 'sketches/05-matrix/05-matrix.html', 'sketches/06-dice/06-dice.html', 'sketches/07-splatter/07-splatter.html', 'sketches/08-music/08-music.html', 'sketches/09-clock/09-clock.html', 'sketches/10-wave/10-wave.html', 'sketches/11-night/11-night.html');
   sketchImages = new Array(nSketches + 1);
   for(var i = 1;i <= nSketches;i++){
     sketchImages[i] = loadImage('assets/thumbnails/' + (i - 1) + '.png');

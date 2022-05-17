@@ -1,5 +1,5 @@
 //let debug = true; //debug boolean, sets screen size to equal to hardware screen size for use with online editor
-let hud = true; //hud default state
+let hud = false; //hud default state
 let info = false; //info panel default state
 let paused = false; //hud default state
 let debug = false; //sets screen size to LVS monitor dimensions
@@ -8,17 +8,21 @@ let keyWidth;
 let fontOxy;
 let keyCream;
 let keyGrey;
+//variable for createGraphics
+let graphicz;
 
 //These variables control different settings such as new dots, reverse, and whether to break the swirl or not.
 let newfire = false;
 let speedy = false;
 let breaker = false;
+let pastel = 0;
+
 
 //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch variables go here!
 //The curve is the angle at which
 var curver = 1.0;
 //Target is the initial x position of the swirl
-var target = 375;
+var target =  256;
 //This is the space between one ring and the next in the swirl
 var spacer = 2.5;
 //This is the speed at which the dots are placed.
@@ -34,8 +38,9 @@ var col = {
 function setup() {
   //changed framrate for smoother transition colors
   frameRate(32);
-
   createCanvas(windowWidth, windowHeight);
+  //declare createGraphics() object
+  graphicz = createGraphics(windowWidth, windowHeight);
   hudWidth = Math.min(1024, width); //set the width of the hud to the screen width if below 1024px
   keyWidth = hudWidth / 13;
   if (debug) {
@@ -48,8 +53,9 @@ function setup() {
   textFont(fontOS);
 
   //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch setup goes here!
+  target = windowWidth / 2;
   background(9);
-
+  graphicz.background(200);
 
 }
 
@@ -61,20 +67,22 @@ function draw() {
   }
 
 
-  //##TODO##~~~~~~~~~~~~~~~~~~~ Sketch logic goes here!
+  //sketch logic goes here
   //Breaker is for breaking the swirl and making random dots on the canvas
   if (breaker == true){
     target = random(0, windowWidth);
   }
 
-  //Newfire is just for testing in the editor. It will make a streak of dots that only follow the mouse if mouse support is added to hardware
+  //Newfire is just for testing in the editor. It will make a streak of dots that only follow the mouse if mouse support is added to hardware.
+  //Fixed!
   if (newfire == true){
     col.r = random(0, 250);
     col.g = random(0, 250);
     col.b = random(0, 250);
-    fill(col.r, col.g, col.b);
-    circ = random(1, 40);
-    ellipse(mouseX, mouseY, circ, circ);
+    graphicz.fill(col.r, col.g, col.b);
+    var rando = random(1,40);
+    graphicz.ellipse(mouseX, mouseY, rando, rando);
+    image(graphicz, 0, 0, width, height);
   }
 
   //Speedy will flip the swirl, making it travel in the opposite direction.
@@ -84,17 +92,38 @@ function draw() {
 
   //Default swirl, this will just make a swirl from the middle of the canvas with no special attributes.
   //Colors are random
-  col.r = random(0, 250);
-  col.g = random(0, 250);
-  col.b = random(0, 250);
+
+  colorMode(HSB, 100);
+
+  col.r = random(0, 255);
+  col.g = random(0, 255);
+  col.b = random(0, 255);
 
   //x and y coordinates of the ellipse are chosen through these formulas
   var x = target + cos(curver) * spacer;
   var y = target + sin(curver) * spacer;
-  fill(col.r, col.g, col.b);
 
 
-  ellipse(x, y, 10, 10);
+  if (pastel == 1){
+    graphicz.fill((x * 100) % 360,(y * 100) % 100, 100);
+  }
+
+  else if (pastel == 2){
+    graphicz.fill(col.r, col.g, col.b);
+  }
+
+  else if (pastel == 3){
+    graphicz.fill(100, (y * 100), (x * 100) % 360);
+  }
+
+  else if (pastel == 0){
+    graphicz.fill((x * 255) % 360, (x * 255) % 360, (x * 255) % 360);
+  }
+
+  graphicz.ellipse(x, y, millis()/200, millis()/200);
+
+  image(graphicz, 0, 0, width, height);
+
 
   //curver and spacer are incremented up to create the actual swirl.
   curver += speed;
@@ -131,7 +160,7 @@ function keyPressed() {
       paused = !paused;
       break;
     case 82: //R (Next Sketch)
-      window.location.href = "../09-clock/09-clock.html"; //redirect current page to sketch 1, a test sketch
+      window.location.href = "../08-music/08-music.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Up (handled by OS)
     case 65: //A (Toggle Info)
@@ -229,16 +258,28 @@ function keyPressed() {
     newfire = false;
     speedy = false;
     breaker = false;
+    pastel = 0;
       break;
-    case 72: //H ()
+    case 72: //H (Deep Warm Hues)
+      //Creates warm colors
+      pastel = 1;
       break;
-    case 74: //J ()
+    case 74: //J (Light Cold Hues)
+      //Creates cold colors
+      pastel = 3;
       break;
-    case 75: //K ()
+    case 75: //K (Flat Color)
+      //Selects the most recent color and makes a flat color of it
+      pastel = 5;
       break;
-    case 76: //L ()
+    case 76: //L (Random Colors)
+      //Creates random colors
+      pastel = 2;
       break;
-    case 59: //; ()
+      //Does not work on my keyboard? The ';' key doesn't register.
+    case 59: //; (Black and White)
+      //Ellipses alternate between black and white
+      pastel = 0;
       break;
     default:
       return false;
@@ -267,14 +308,14 @@ function drawHud() {
   //draw sketch control keys
   //keys are drawn by drawKey method. Parameters: x positon, y position, label, state, fill, stroke
   drawKey(keyWidth * 8, height - keyWidth * 2, "New Ring", "", keyCream, keyGrey); //Key 10 ()
-  drawKey(keyWidth * 9, height - keyWidth * 2, "Reversal", "", keyCream, keyGrey); //Key 11 ()
+  drawKey(keyWidth * 9, height - keyWidth * 2, "Reverse", "", keyCream, keyGrey); //Key 11 ()
   drawKey(keyWidth * 10, height - keyWidth * 2, "Break Swirl", "", keyCream, keyGrey); //Key 12 ()
-  drawKey(keyWidth * 11, height - keyWidth * 2, "Brush", "", keyCream, keyGrey); //Key 13 ()
+  drawKey(keyWidth * 11, height - keyWidth * 2, "Mouse Brush", "", keyCream, keyGrey); //Key 13 ()
   drawKey(keyWidth * 12, height - keyWidth * 2, "Full Reset", "", keyCream, keyGrey); //Key 14 ()
-  drawKey(keyWidth * 8, height - keyWidth, "", "", keyCream, keyGrey); //Key 15 ()
-  drawKey(keyWidth * 9, height - keyWidth, "", "", keyCream, keyGrey); //Key 16 ()
-  drawKey(keyWidth * 10, height - keyWidth, "", "", keyCream, keyGrey); //Key 17 ()
-  drawKey(keyWidth * 11, height - keyWidth, "", "", keyCream, keyGrey); //Key 18 ()
+  drawKey(keyWidth * 8, height - keyWidth, "Warm Hues", "", keyCream, keyGrey); //Key 15 ()
+  drawKey(keyWidth * 9, height - keyWidth, "Cold Hues", "", keyCream, keyGrey); //Key 16 ()
+  drawKey(keyWidth * 10, height - keyWidth, "Flat Color", "", keyCream, keyGrey); //Key 17 ()
+  drawKey(keyWidth * 11, height - keyWidth, "Random Colors", "", keyCream, keyGrey); //Key 18 ()
   drawKey(keyWidth * 12, height - keyWidth, "", "", keyCream, keyGrey); //Key 19 ()
 
   //draw sketch control knobs
@@ -301,7 +342,7 @@ function drawInfo() {
   text("Artist Statement:", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
-    "Splatter - This is a visual sketch where the user can alter how the swirl spins and what the canvas will ultimately look like. It is meant to simulate splatter painting, which is a type of painting. The swirl will spin on its own and the user can use the various buttons to manipulate it to make their own unique canvas. Use the New Ring button to stop the current ring in the swirl and skip to the next. Use Reversal to flip the direction the swirl is spinning in. Use Breaker to completely remove the swirl and randomly scatter dots around the canvas. Brush will create a trail of random dots behind the cursor, so it requires mouse support. Finally, use Full Reset to undo these settings, all except the target, creating a new swirl at that target location.",
+    "Splatter - With this sketch you can interact with an unending spiral of circles that grow over time. Use New Ring to skip the current ring and go to the next. Reverse will switch from clockwise to counter-clockwise. Break Swirl will destroy the swirl entirely, placing the dots randomly. Mouse Brush will create a trail on your cursor, allowing you to make your own trail of alternating circles. Full Reset will revert these settings to their defaults. The bottom row of buttons control the colors. The warm hues are red and purple, while the cold hues are blue and green. Flat color will select whichever color the last circle was and repeat it. Random colors will select random colors!",
     (width * 0.5) - (hudWidth * 0.35),
     height * 0.21,
     (hudWidth * 0.7),
@@ -341,4 +382,18 @@ function drawKnob(posX, posY, var_name, value, state, knobFill, knobStroke) {
 
 function randomize() {
   //function called by the randomize values key: must be filled with sketch specific variables
+}
+
+function swatchable(fam) { //family 0 = red tones, 1 = green, 2 = blue
+  var red = fam == 0 ? 255 : floor(random(0, 200));
+  var green = fam == 1 ? 255 : floor(random(0, 200));
+  var blue = fam == 2 ? 255 : floor(random(0, 200));
+  return color(red, green, blue);
+}
+
+function swatchable_pastel(fam) { //family 0 = red tones, 1 = green, 2 = blue
+  var red = fam == 0 ? 255 : floor(random(140, 250));
+  var green = fam == 1 ? 255 : floor(random(140, 250));
+  var blue = fam == 2 ? 255 : floor(random(140, 250));
+  return color(red, green, blue);
 }
