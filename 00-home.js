@@ -150,7 +150,7 @@ function keyPressed() {
       break;
     //Refresh/reset (handled by OS)
     case 70: //F (Previous Sketch)
-      window.location.href = "sketches/11-night/11-night.html"; //~~~PLACEHOLDER, UPDATE~~~ redirect current page to sketch 0, the home menu
+      window.location.href = "sketches/02-goodMorning/02-goodMorning.html"; //redirect current page to sketch 1, a test sketch
       break;
     //Volume Dn (handled by OS)
 
@@ -386,7 +386,7 @@ function drawInfo() {
   rectMode(CORNER);
   stroke(keyCream);
   fill(keyGrey);
-  text("Noisy Pixels - Rob Tyndall", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
+  text("Noisy Pixels - Genesis Tyndall", (width * 0.5) - (hudWidth * 0.35), height * 0.18);
   textSize(16);
   text(
     "Overview:\n\nNoisy Pixels is a procedural animation that primarily uses parametric color generation, perlin noise, and linear interpolation between colors. The primary data structure is an array containing a series of colors. At one end of the array is \’Color 1\’, and at the other end \’Color 2\’. Between these two endpoints the rest of the array is filled with the colors that fall between these colors in RGB space. For each frame, each extra large pixel drawn to the screen is assigned a color based on a perlin noise function, which is what makes the color of any individual pixel change organically from one frame to the next.\n\nInteractivity:\nThe interactivity of this sketch allows for control of the two colors forming the endpoints of the color array, as well as control of the amount of distinct colors between these endpoints, or \’Steps\’. The size of the pixels can be changed with the \’Size\’ controls. The \’Speed\’ controls change the variability of the noise function, which makes the colors change more slowly or rapidly. The \’Remix\’ controls change only the selected color, and the \’Shuffle\’ control randomizes all of the variables at once!",
